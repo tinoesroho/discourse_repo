@@ -1,4 +1,4 @@
-# Server-side: Discourse Mute
+# Discourse "Plugin": Discourse Mute
 
 Based on [SleepProgger's hide user userscript](https://github.com/SleepProgger/imgur_userscripts/blob/master/scripts/imgur_hide_user.user.js), this is easy for Discourse admins to add to their board.
 
