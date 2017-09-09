@@ -7,7 +7,7 @@ Based on [SleepProgger's hide user userscript](https://github.com/SleepProgger/i
 
 ## Installation
 
-1. Copy and paste the code from here: https://github.com/tinoesroho/imgur_userscripts/blob/master/scripts/discourse_mute.js into all theme \</head> sections.
+1. Copy and paste the code from here: https://github.com/tinoesroho/discourse_repo/blob/master/scripts/discourse_mute.js into all theme \</head> sections.
 2. Change the cookie name (in variable)
 3. Add CSS to theme for Overlay.
 
