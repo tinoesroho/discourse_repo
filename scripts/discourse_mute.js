@@ -1,26 +1,11 @@
-<script type="text/javascript">
-    var logo_small = "https://bbs.happymutants.space/uploads/default/original/2X/a/a520bef286748fa45c961c74b274feff842f262b.svg";
+var run_script = false;
 
-$('body').ready(function() {
-    checkSize();
-    MakeMagic();
-});
-
-function checkSize() {
-    var x = document.getElementsByClassName("topic-link").length;
-    if (x != 0) {
-        document.getElementById("site-logo").src = logo_small;
-    }
-	setTimeout(checkSize, 1500);
-}
-
-$('body').ready(function(){
+window.onload = (function(){
     if (window.location.href.indexOf("/t/") > 0) {
+        run_script = true;
         MakeMagic();
     }
-	checkSize();
 });    
-
 
 if (!this.GM_getValue || (this.GM_getValue.toString && this.GM_getValue.toString().indexOf("not supported")>-1)) {
     this.GM_getValue=function (key,def) {
@@ -34,14 +19,21 @@ if (!this.GM_getValue || (this.GM_getValue.toString && this.GM_getValue.toString
     };
 }
 
+var GR_COOKIE_NAME = 'elsewhere_mute_users';
+var hide_ids = $.parseJSON(GM_getValue(GR_COOKIE_NAME, '{}'));
+
+document.addEventListener("wheel", function(event) { 
+    setTimeout(MakeMagic, 1000);
+});
+
 function RecastSpell(){
-setTimeout (MakeMagic, 1000);
+    if (run_script == true) {
+        MakeMagic();
+    }
 }
 
 function MakeMagic(){
-	var GR_COOKIE_NAME = 'elsewhere_mute_users';
-	var hide_ids = $.parseJSON(GM_getValue(GR_COOKIE_NAME, '{}'));
-
+    hide_ids = $.parseJSON(GM_getValue(GR_COOKIE_NAME, '{}'));
 	function handle_post_node(node){
 		var tid = node.getAttribute('data-user-id');
 		var name = $('[data-user-id="'+tid+'"]').find('.username a').first().text();
@@ -130,6 +122,4 @@ function MakeMagic(){
 		}
 	});
 	observer.observe(document, { subtree: true, childList: true});
-	document.onscroll = setTimeout(RecastSpell, 500);
 }
-</script>
