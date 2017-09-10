@@ -23,7 +23,7 @@ var GR_COOKIE_NAME = 'elsewhere_mute_users';
 var hide_ids = $.parseJSON(GM_getValue(GR_COOKIE_NAME, '{}'));
 
 document.addEventListener("wheel", function(event) { 
-    setTimeout(MakeMagic, 1000);
+    setTimeout(RecastSpell, 1000);
 });
 
 function RecastSpell(){
