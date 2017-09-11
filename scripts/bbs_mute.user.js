@@ -70,12 +70,12 @@ function doWork() {
 			$(node).find('.contents').hide();
 			if($(node).find('.umute_btn').length > 0) return;
 			var btn = $('<button class="umute_btn" title="Unmute this user." style="background-color: Transparent; background-repeat:no-repeat; border: none; cursor:pointer; overflow: hidden; outline:none; margin-left: 3px; "><i class="fa fa-microphone"></i></button>');
-			$(node).find('.post-info').first().prepend(btn);
+			$(node).find('.post-info').first().append(btn);
 			btn.click(umute_foo);
 		}else {
 			if($(node).find('.mute_btn').length > 0) return;
 			var btn = $('<button title="Mute this user." style="background: none;" class="mute_btn"><i class="fa fa-microphone-slash"></i></button>');
-			btn.insertBefore($(node).find('.create').last());
+			$(node).find('.post-info').first().append(btn);
 			btn.click(mute_foo);
 		}
 	}
