@@ -1,6 +1,6 @@
 var run_script = false;
 
-window.onload = (function(){
+$(document).ready(function(){
     if (window.location.href.indexOf("/t/") > 0) {
         run_script = true;
         MakeMagic();
@@ -19,12 +19,20 @@ if (!this.GM_getValue || (this.GM_getValue.toString && this.GM_getValue.toString
     };
 }
 
-var GR_COOKIE_NAME = 'elsewhere_mute_users';
+var GR_COOKIE_NAME = 'community_mute_users';
 var hide_ids = $.parseJSON(GM_getValue(GR_COOKIE_NAME, '{}'));
 
-document.addEventListener("wheel", function(event) { 
-    setTimeout(RecastSpell, 1000);
-});
+(function(){
+    event = function(event){
+        if (event.animationName == 'nodeInserted') {
+            RecastSpell();
+        }
+    }
+        
+document.addEventListener('animationstart', event, false);
+document.addEventListener('MSAnimationStart', event, false);
+document.addEventListener('webkitAnimationStart', event, false);
+})();
 
 function RecastSpell(){
     if (run_script == true) {
@@ -41,8 +49,7 @@ function MakeMagic(){
 		    //var name = $(node).find('.names').text;
 		    var confirmString = "Really mute " + name + "?";  
 		    if (confirm(confirmString) == true) {
-                serveJustice();
-                this.innerHTML = "Unmute;"
+ 	                this.innerHTML = "Unmute;"
 			$(node).find('.contents').hide();
 			$(node).find('.names').hide();
 			$(node).find('.avatar').hide();
@@ -51,17 +58,8 @@ function MakeMagic(){
 			hide_ids[tid] = 1;
 			GM_setValue(GR_COOKIE_NAME, JSON.stringify(hide_ids));
 			$('[data-user-id="'+tid+'"]').find('.mute_btn').remove();
-			$('[data-user-id="'+tid+'"]').each(function(){ handle_post_node(this) });
-		        setTimeout(endAnimation, 3000);            
+			$('[data-user-id="'+tid+'"]').each(function(){ handle_post_node(this) });         
 		    }
-		}
-
-		function serveJustice() {
-		    var overlay = jQuery('<div id="overlay" class="overlay"> </div>');
-            overlay.appendTo(document.body);
-		}
-		function endAnimation(){
-		 	$( ".overlay" ).remove();
 		}
 		function umute_foo(){
 		    var confirmString = "Unmute " + name + "?";  
