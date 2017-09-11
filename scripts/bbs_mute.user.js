@@ -3,6 +3,7 @@
 // @namespace   bbs_mute
 // @include     https://bbs.boingboing.net/*
 // @version     0.5a
+// @resource   mute_css https://www.gitcdn.xyz/repo/tinoesroho/discourse_repo/master/scripts/mute.css
 // @grant       none
 // ==/UserScript==
 $('head').append('<link rel="stylesheet" href="https://gitcdn.xyz/repo/tinoesroho/discourse_repo/master/scripts/mute.css" type="text/css" />');
