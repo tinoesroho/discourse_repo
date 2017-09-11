@@ -69,12 +69,12 @@ function doWork() {
 		if(hide_ids[tid]){			
 			$(node).find('.contents').hide();
 			if($(node).find('.umute_btn').length > 0) return;
-			var btn = $('<button class="umute_btn" title="Unmute this user." style="border:0px; background-color: Transparent; background-repeat:no-repeat; border: none; cursor:pointer; overflow: hidden; outline:none; margin-left: 3px; "><i class="fa fa-microphone"></i></button>');
+			var btn = $('<button class="umute_btn btn_flat" title="Unmute this user." style="border:0px; background-color: Transparent; background-repeat:no-repeat; border: none; cursor:pointer; overflow: hidden; outline:none; margin-left: 3px; "><i class="fa fa-microphone"></i></button>');
 			$(node).find('.post-info').first().append(btn);
 			btn.click(umute_foo);
 		}else {
 			if($(node).find('.mute_btn').length > 0) return;
-			var btn = $('<button title="Mute this user." style="background: none; border:0px;" class="mute_btn"><i class="fa fa-microphone-slash"></i></button>');
+			var btn = $('<button title="Mute this user." style="background: none; border:0px;" class="mute_btn btn_flat"><i class="fa fa-microphone-slash"></i></button>');
 			$(node).find('.post-info').first().append(btn);
 			btn.click(mute_foo);
 		}
