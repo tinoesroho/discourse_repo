@@ -2,7 +2,7 @@
 // @name        BBS One Click Love-Script
 // @namespace   bbs-autolove
 // @include     https://bbs.boingboing.net/*
-// @version     2017.04.11
+// @version     2018.06.27-EndSupport
 // @resource   mute_css https://www.gitcdn.xyz/repo/tinoesroho/discourse_repo/master/scripts/mute.css
 // @grant       none
 // ==/UserScript==
@@ -28,88 +28,9 @@ if (!this.GM_getValue || (this.GM_getValue.toString && this.GM_getValue.toString
 	var hide_ids = $.parseJSON(GM_getValue(GR_COOKIE_NAME, '{}'));
 
 $('body').ready(function(){
-  startLoving();
+	var notice = $('<div class="wequit"><div class="bootbox modal in" tabindex="-1" style="overflow: hidden; padding-right: 0px;"><div class="modal-body">All the love broke the BBS database. Please disable this script.</div><div class="modal-footer"><a data-handler="0" class="btn btn-primary" href="javascript:;">OK</a></div></div><div class="modal-backdrop in"></div></div>');
+$(notice).appendTo("body");
+setTimeout(function(){
+  $('.wequit').remove();
+}, 5000);
 });
-
-(function(){
-    event = function(event){
-        if (event.animationName == 'nodeInserted') {
-            startLoving();
-        }
-    }
-        
-document.addEventListener('animationstart', event, false);
-document.addEventListener('MSAnimationStart', event, false);
-document.addEventListener('webkitAnimationStart', event, false);
-})();
-
-function startLoving() {
-	function handle_post_node(node){
-		var tid = node.getAttribute('data-user-id');
-		function love_foo(){
-			this.innerHTML = "Unlove";
-			$(this).unbind('click', love_foo);
-			$(this).click(ulove_foo);
-			hide_ids[tid] = 1;
-			GM_setValue(GR_COOKIE_NAME, JSON.stringify(hide_ids));
-			$('[data-user-id="'+tid+'"]').find('.love_btn').remove();
-			$('[data-user-id="'+tid+'"]').each(function(){ handle_post_node(this) });
-		}
-		function ulove_foo(){
-			this.innerHTML = "love";
-			$(this).unbind('click', ulove_foo);
-			$(this).click(love_foo);
-			delete hide_ids[tid];
-			GM_setValue(GR_COOKIE_NAME, JSON.stringify(hide_ids));
-			$('[data-user-id="'+tid+'"]').find('.ulove_btn').remove();
-			$('[data-user-id="'+tid+'"]').each(function(){ $(this).find('.contents').show(); handle_post_node(this) });
-		}
-		// execute on finding loved one
-		if(hide_ids[tid]){			
-//			$(node).find('.contents').hide();
-			$(node).find('.contents').show();
-			if($(node).find('.ulove_btn').length > 0) return;
-			var btn = $('<button class="ulove_btn btn_flat" title="Unsupport this user." style="border: 0px; background-color: Transparent; background-repeat:no-repeat; border: none; cursor:pointer; overflow: hidden; outline:none; margin-left: 3px; "><i class="fa fa-toggle-on"></i></button>');
-			$(node).find('.post-info').first().prepend(btn);
-			btn.click(ulove_foo);
-			$('[data-user-id="'+tid+'"]').find("like").click();
-			$('[data-user-id="'+tid+'"]').find(".like").click();
-		}
-// end execute
-			else{
-			if($(node).find('.love_btn').length > 0) return;
-				var btn = $('<button title="Support this user." style="background: none; border:0px;" class="love_btn btn_flat"><i class="fa fa-toggle-off"></i></button>');
-			$(node).find('.post-info').first().prepend(btn);
-			btn.click(love_foo);
-		}
-	}
-	
-	$('article').each(function(){handle_post_node(this)});
-	var observer = new MutationObserver(function(mutations) {
-		for(var i=0; i < mutations.length; ++i){
-			var mutation = mutations[i];
-			for(var j=0; j < mutation.addedNodes.length; ++j){
-				if(mutation.addedNodes[j].nodeName == "#text") continue;
-				var node = mutation.addedNodes[j];
-				//console.log(node);
-				if(node.className == 'container posts'){
-					$(node).find('article').each(function(){handle_post_node(this)});
-					continue;
-				}
-				// just to be sure (TODO: sometimes when jumping to a thread via notification the posts aren't handled.
-				// This "hack" (should) ensure that all posts are handled )
-				if(node.className == 'topic-link'){
-					$(window.document).find('article').each(function(){handle_post_node(this)});
-					continue;
-				}
-				if(node.className == 'ember-view post-cloak'){
-					node = $(node).find('article').get(0);
-				}
-				if(node.nodeName == "ARTICLE" && node.getAttribute('data-user-id')){
-					handle_post_node(node);	
-				}
-			}
-		}
-	});
-observer.observe(document, { subtree: true, childList: true});
-}
